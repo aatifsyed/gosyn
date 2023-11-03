@@ -4,7 +4,7 @@ use std::fmt::{Debug, Formatter};
 use strum::EnumString;
 use strum::IntoStaticStr;
 
-#[derive(Copy, Clone, Eq, PartialEq, Debug, EnumString, IntoStaticStr)]
+#[derive(Copy, Clone, Eq, PartialEq, Debug, EnumString, IntoStaticStr, PartialOrd, Ord, Hash)]
 pub enum Operator {
     #[strum(serialize = "+")]
     Add,
@@ -112,7 +112,7 @@ pub enum Operator {
     SemiColon,
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Debug, EnumString, IntoStaticStr)]
+#[derive(Copy, Clone, Eq, PartialEq, Debug, EnumString, IntoStaticStr, PartialOrd, Ord, Hash)]
 pub enum Keyword {
     #[strum(serialize = "break")]
     Break,
@@ -170,7 +170,7 @@ pub enum Keyword {
     Var,
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Debug, PartialOrd, Ord, Hash)]
 pub enum LitKind {
     Ident,
     String,

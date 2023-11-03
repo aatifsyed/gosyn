@@ -14,7 +14,7 @@ pub struct Comment {
     pub text: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct Ident {
     pub pos: usize,
     pub name: String,
@@ -56,7 +56,7 @@ pub struct Field {
     pub comments: Vec<Rc<Comment>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct FieldList {
     pub pos: Option<(usize, usize)>,
     pub list: Vec<Field>,
@@ -68,7 +68,7 @@ pub struct StructType {
     pub fields: Vec<Field>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct FuncType {
     pub pos: usize,
     pub typ_params: FieldList,
@@ -104,7 +104,7 @@ pub struct BasicLit {
     pub value: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct StringLit {
     pub pos: usize,
     pub value: String,
@@ -253,7 +253,7 @@ pub struct Decl<T> {
     pub specs: Vec<T>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct VarSpec {
     pub docs: Vec<Rc<Comment>>,
     pub name: Vec<Ident>,
@@ -261,7 +261,7 @@ pub struct VarSpec {
     pub values: Vec<Expression>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct ConstSpec {
     pub docs: Vec<Rc<Comment>>,
     pub name: Vec<Ident>,
@@ -476,13 +476,13 @@ pub enum Statement {
     Declaration(DeclStmt),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct Import {
     pub name: Option<Ident>,
     pub path: StringLit,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct File {
     pub path: PathBuf,
     pub line_info: Vec<usize>,
@@ -607,62 +607,6 @@ impl Spec for ConstSpec {
     fn with_docs(mut self, docs: Vec<Rc<Comment>>) -> ConstSpec {
         self.docs = docs;
         self
-    }
-}
-
-impl Debug for Expression {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Call(arg0) => f.debug_tuple("Call").field(arg0).finish(),
-            Self::Index(arg0) => f.debug_tuple("Index").field(arg0).finish(),
-            Self::IndexList(arg0) => f.debug_tuple("IndexList").field(arg0).finish(),
-            Self::Slice(arg0) => f.debug_tuple("Slice").field(arg0).finish(),
-            Self::Ident(arg0) => f.debug_tuple("Ident").field(arg0).finish(),
-            Self::FuncLit(arg0) => f.debug_tuple("FuncLit").field(arg0).finish(),
-            Self::Ellipsis(arg0) => f.debug_tuple("Ellipsis").field(arg0).finish(),
-            Self::Selector(arg0) => f.debug_tuple("Selector").field(arg0).finish(),
-            Self::BasicLit(arg0) => f.debug_tuple("BasicLit").field(arg0).finish(),
-            Self::Range(arg0) => f.debug_tuple("Range").field(arg0).finish(),
-            Self::Star(arg0) => f.debug_tuple("Star").field(arg0).finish(),
-            Self::Paren(arg0) => f.debug_tuple("Paren").field(arg0).finish(),
-            Self::TypeAssert(arg0) => f.debug_tuple("TypeAssert").field(arg0).finish(),
-            Self::CompositeLit(arg0) => f.debug_tuple("CompositeLit").field(arg0).finish(),
-            Self::List(arg0) => f.debug_tuple("List").field(arg0).finish(),
-            Self::Operation(arg0) => f.debug_tuple("Operation").field(arg0).finish(),
-            Self::TypeMap(arg0) => f.debug_tuple("TypeMap").field(arg0).finish(),
-            Self::TypeArray(arg0) => f.debug_tuple("TypeArray").field(arg0).finish(),
-            Self::TypeSlice(arg0) => f.debug_tuple("TypeSlice").field(arg0).finish(),
-            Self::TypeFunction(arg0) => f.debug_tuple("TypeFunction").field(arg0).finish(),
-            Self::TypeStruct(arg0) => f.debug_tuple("TypeStruct").field(arg0).finish(),
-            Self::TypeChannel(arg0) => f.debug_tuple("TypeChannel").field(arg0).finish(),
-            Self::TypePointer(arg0) => f.debug_tuple("TypePointer").field(arg0).finish(),
-            Self::TypeInterface(arg0) => f.debug_tuple("TypeInterface").field(arg0).finish(),
-        }
-    }
-}
-
-impl Debug for Statement {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Go(arg0) => f.debug_tuple("Go").field(arg0).finish(),
-            Self::If(arg0) => f.debug_tuple("If").field(arg0).finish(),
-            Self::For(arg0) => f.debug_tuple("For").field(arg0).finish(),
-            Self::Send(arg0) => f.debug_tuple("Send").field(arg0).finish(),
-            Self::Expr(arg0) => f.debug_tuple("Expr").field(arg0).finish(),
-            Self::Defer(arg0) => f.debug_tuple("Defer").field(arg0).finish(),
-            Self::Block(arg0) => f.debug_tuple("Block").field(arg0).finish(),
-            Self::Range(arg0) => f.debug_tuple("Range").field(arg0).finish(),
-            Self::Empty(arg0) => f.debug_tuple("Empty").field(arg0).finish(),
-            Self::Label(arg0) => f.debug_tuple("Label").field(arg0).finish(),
-            Self::IncDec(arg0) => f.debug_tuple("IncDec").field(arg0).finish(),
-            Self::Assign(arg0) => f.debug_tuple("Assign").field(arg0).finish(),
-            Self::Return(arg0) => f.debug_tuple("Return").field(arg0).finish(),
-            Self::Branch(arg0) => f.debug_tuple("Branch").field(arg0).finish(),
-            Self::Switch(arg0) => f.debug_tuple("Switch").field(arg0).finish(),
-            Self::Select(arg0) => f.debug_tuple("Select").field(arg0).finish(),
-            Self::TypeSwitch(arg0) => f.debug_tuple("TypeSwitch").field(arg0).finish(),
-            Self::Declaration(arg0) => f.debug_tuple("Declaration").field(arg0).finish(),
-        }
     }
 }
 
